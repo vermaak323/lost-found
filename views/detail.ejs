@@ -1,10 +1,31 @@
-<h2><%= item.name %></h2>
-<p>Type: <%= item.type %></p>
-<p>Category: <%= item.category %></p>
-<p>Location: <%= item.location %></p>
-<p><%= item.description %></p>
+<link rel="stylesheet" href="/styles.css">
 
-<h3>Possible Matches</h3>
-<% matches.forEach(m => { %>
-  <p><%= m.name %> - <%= m.type %></p>
-<% }) %>
+
+<div class="container">
+  <div class="card">
+    <h2><%= item.name %></h2>
+
+    <span class="badge <%= item.type %>">
+      <%= item.type.toUpperCase() %>
+    </span>
+
+    <p><strong>Category:</strong> <%= item.category %></p>
+    <p><strong>Location:</strong> <%= item.location %></p>
+    <p><%= item.description %></p>
+  </div>
+
+  <h3>Possible Matches</h3>
+
+  <% if (matches.length === 0) { %>
+    <p>No matching items found.</p>
+  <% } else { %>
+    <% matches.forEach(m => { %>
+      <div class="card">
+        <strong><%= m.name %></strong> — <%= m.type %>
+      </div>
+    <% }) %>
+  <% } %>
+
+  <br>
+  <a class="btn" href="/items">Back to Items</a>
+</div>

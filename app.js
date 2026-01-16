@@ -6,6 +6,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+
 const DATA_FILE = "./data/items.json";
 
 // Home
@@ -32,9 +33,15 @@ app.post("/add", (req, res) => {
 
 // View All Items
 app.get("/items", (req, res) => {
-  const items = JSON.parse(fs.readFileSync(DATA_FILE));
+  let items = JSON.parse(fs.readFileSync(DATA_FILE));
+
+  if (req.query.type) {
+    items = items.filter(i => i.type === req.query.type);
+  }
+
   res.render("items", { items });
 });
+
 
 // Item Detail
 app.get("/items/:id", (req, res) => {
