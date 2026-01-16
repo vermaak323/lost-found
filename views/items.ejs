@@ -1,34 +1,54 @@
-<link rel="stylesheet" href="/styles.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lost & Found</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
 
-<div class="container">
-  <a href="/" class="app-title">
-    <h1>Lost & Found</h1>
-  </a>
+<body>
 
+  <div class="container">
 
-  <div class="tabs">
-    <a href="/items" class="active">All Items</a>
-    <a href="/items?type=lost">Lost</a>
-    <a href="/items?type=found">Found</a>
-  </div>
+    <header class="page-header">
+      <a href="/" class="app-title">
+        <h1>Lost & Found</h1>
+      </a>
 
-  <div class="grid">
-    <% items.forEach(item => { %>
-      <div class="card">
-        <div class="image-box"></div>
+      <nav class="tabs">
+        <a href="/items" class="tab">All Items</a>
+        <a href="/items?type=Lost" class="tab">Lost</a>
+        <a href="/items?type=Found" class="tab">Found</a>
+      </nav>
+    </header>
 
-        <span class="badge <%= item.type %>">
-          <%= item.type.toUpperCase() %>
-        </span>
+    <section class="items-grid">
+      <% items.forEach(item => { %>
+        <div class="item-card">
 
-        <h3><%= item.name %></h3>
+          <% if (item.image) { %>
+            <img src="<%= item.image %>" class="item-image">
+          <% } else { %>
+            <div class="image-placeholder">No Image</div>
+          <% } %>
 
-        <div class="meta">
-          <%= item.location %>
+          <span class="badge <%= item.type === 'Lost' ? 'lost' : 'found' %>">
+            <%= item.type.toUpperCase() %>
+          </span>
+
+          <h3><%= item.name %></h3>
+          <p class="location"><%= item.location %></p>
+
+          <a href="/items/<%= item.id %>" class="details-btn">
+            View Details
+          </a>
         </div>
+      <% }) %>
+    </section>
 
-        <a class="btn" href="/items/<%= item.id %>">View Details</a>
-      </div>
-    <% }) %>
   </div>
-</div>
+
+</body>
+
+
+</html>

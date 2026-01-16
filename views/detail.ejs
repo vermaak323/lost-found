@@ -1,31 +1,38 @@
-<link rel="stylesheet" href="/styles.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= item.name %> | Lost & Found</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
 
+  <div class="container">
 
-<div class="container">
-  <div class="card">
-    <h2><%= item.name %></h2>
+    <a href="/items" class="back-link">← Back to Items</a>
 
-    <span class="badge <%= item.type %>">
-      <%= item.type.toUpperCase() %>
-    </span>
+    <div class="detail-card">
 
-    <p><strong>Category:</strong> <%= item.category %></p>
-    <p><strong>Location:</strong> <%= item.location %></p>
-    <p><%= item.description %></p>
+      <% if (item.image) { %>
+        <img src="<%= item.image %>" class="detail-image">
+      <% } %>
+
+      <div class="detail-content">
+        <span class="badge <%= item.type === 'Lost' ? 'lost' : 'found' %>">
+          <%= item.type.toUpperCase() %>
+        </span>
+
+        <h1><%= item.name %></h1>
+
+        <p><strong>Category:</strong> <%= item.category %></p>
+        <p><strong>Location:</strong> <%= item.location %></p>
+        <p><strong>Date:</strong> <%= item.date %></p>
+
+        <p class="description"><%= item.description %></p>
+      </div>
+    </div>
+
   </div>
 
-  <h3>Possible Matches</h3>
-
-  <% if (matches.length === 0) { %>
-    <p>No matching items found.</p>
-  <% } else { %>
-    <% matches.forEach(m => { %>
-      <div class="card">
-        <strong><%= m.name %></strong> — <%= m.type %>
-      </div>
-    <% }) %>
-  <% } %>
-
-  <br>
-  <a class="btn" href="/items">Back to Items</a>
-</div>
+</body>
+</html>
