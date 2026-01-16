@@ -47,3 +47,49 @@ In campuses and public places, lost and found items are often reported informall
 
 ## 📂 Project Structure
 
+lost-found/
+│
+├── public/
+│ ├── styles.css # Main CSS file for styling
+│ ├── images/ # Static images used in UI
+│ └── uploads/ # Uploaded images for found/lost items
+│
+├── views/
+│ ├── home.ejs # Homepage of the application
+│ ├── add.ejs # Form to add lost/found item
+│ ├── items.ejs # List of all lost & found items
+│ └── detail.ejs # Detailed view of a single item
+│
+├── data/
+│ └── items.json # Stores item data in JSON format
+│
+├── db.js # Database connection & configuration
+├── database.db # Database file
+├── app.js # Main Express server file
+├── package.json # Project metadata & dependencies
+├── package-lock.json # Dependency lock file
+└── README.md # Project documentation
+
+
+---
+
+## 🧠 **Optional (sir ke liye extra strong)**
+Agar thoda aur explanation chahiye **structure ke niche**, to ye bhi paste kar sakta hai 👇
+
+```md
+### 📌 Structure Explanation
+
+- **public/**  
+  Contains all static assets such as CSS files, images, and uploaded item photos.
+
+- **views/**  
+  Holds EJS templates used to render dynamic pages like home, item listing, and item details.
+
+- **data/**  
+  Used for temporary storage of lost and found item information.
+
+- **db.js**  
+  Manages database connection logic.
+
+- **app.js**  
+  Entry point of the application where routes, middleware, and server configuration are defined.
