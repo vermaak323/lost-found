@@ -1,10 +1,38 @@
-<h2><%= item.name %></h2>
-<p>Type: <%= item.type %></p>
-<p>Category: <%= item.category %></p>
-<p>Location: <%= item.location %></p>
-<p><%= item.description %></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= item.name %> | Lost & Found</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
 
-<h3>Possible Matches</h3>
-<% matches.forEach(m => { %>
-  <p><%= m.name %> - <%= m.type %></p>
-<% }) %>
+  <div class="container">
+
+    <a href="/items" class="back-link">← Back to Items</a>
+
+    <div class="detail-card">
+
+      <% if (item.image) { %>
+        <img src="<%= item.image %>" class="detail-image">
+      <% } %>
+
+      <div class="detail-content">
+        <span class="badge <%= item.type === 'Lost' ? 'lost' : 'found' %>">
+          <%= item.type.toUpperCase() %>
+        </span>
+
+        <h1><%= item.name %></h1>
+
+        <p><strong>Category:</strong> <%= item.category %></p>
+        <p><strong>Location:</strong> <%= item.location %></p>
+        <p><strong>Date:</strong> <%= item.date %></p>
+
+        <p class="description"><%= item.description %></p>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

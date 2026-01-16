@@ -1,54 +1,98 @@
 const express = require("express");
-const fs = require("fs");
-const app = express();
+const path = require("path");
+const multer = require("multer");
+const db = require("./db");
 
-app.set("view engine", "ejs");
+const app = express();
+const PORT = 3000;
+
+/* -------------------- Middleware -------------------- */
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-const DATA_FILE = "./data/items.json";
+app.set("view engine", "ejs");
+
+/* -------------------- Multer Config -------------------- */
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/uploads");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  }
+});
+
+const upload = multer({ storage });
+
+/* -------------------- Routes -------------------- */
 
 // Home
 app.get("/", (req, res) => {
   res.render("home");
 });
 
-// Add Item Page
+// Show add item form
 app.get("/add", (req, res) => {
   res.render("add");
 });
 
-// Save Item
-app.post("/add", (req, res) => {
-  const items = JSON.parse(fs.readFileSync(DATA_FILE));
-  const newItem = {
-    id: Date.now(),
-    ...req.body
-  };
-  items.push(newItem);
-  fs.writeFileSync(DATA_FILE, JSON.stringify(items, null, 2));
-  res.redirect("/items");
-});
+// Handle add item form
+app.post("/add", upload.single("image"), (req, res) => {
+  const { name, type, category, location, date, description } = req.body;
 
-// View All Items
-app.get("/items", (req, res) => {
-  const items = JSON.parse(fs.readFileSync(DATA_FILE));
-  res.render("items", { items });
-});
+  const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
 
-// Item Detail
-app.get("/items/:id", (req, res) => {
-  const items = JSON.parse(fs.readFileSync(DATA_FILE));
-  const item = items.find(i => i.id == req.params.id);
-
-  const matches = items.filter(i =>
-    i.category === item.category &&
-    i.type !== item.type
+  db.run(
+    `INSERT INTO items (name, type, category, location, date, description, image)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    [name, type, category, location, date, description, imagePath],
+    (err) => {
+      if (err) {
+        console.error("Insert error:", err);
+      }
+      res.redirect("/items");
+    }
   );
-
-  res.render("detail", { item, matches });
 });
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+// View all items (with optional filter)
+app.get("/items", (req, res) => {
+  let query = "SELECT * FROM items";
+  const params = [];
+
+  if (req.query.type) {
+    query += " WHERE type = ?";
+    params.push(req.query.type);
+  }
+
+  db.all(query, params, (err, items) => {
+    if (err) items = [];
+    res.render("items", { items, query: req.query });
+  });
+});
+
+
+// View item details
+app.get("/items/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.get("SELECT * FROM items WHERE id = ?", [id], (err, item) => {
+    if (!item) {
+      return res.redirect("/items");
+    }
+
+    db.all(
+      "SELECT * FROM items WHERE category = ? AND type != ?",
+      [item.category, item.type],
+      (err, matches) => {
+        if (err) matches = [];
+        res.render("detail", { item, matches });
+      }
+    );
+  });
+});
+
+/* -------------------- Server -------------------- */
+app.listen(PORT, () => {
+  console.log(`✅ Server running at http://localhost:${PORT}`);
 });

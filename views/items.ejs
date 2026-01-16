@@ -1,8 +1,54 @@
-<h2>All Items</h2>
-<% items.forEach(item => { %>
-  <div>
-    <h3><%= item.name %></h3>
-    <p><%= item.type %> - <%= item.category %></p>
-    <a href="/items/<%= item.id %>">View</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lost & Found</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+
+  <div class="container">
+
+    <header class="page-header">
+      <a href="/" class="app-title">
+        <h1>Lost & Found</h1>
+      </a>
+
+      <nav class="tabs">
+        <a href="/items" class="tab">All Items</a>
+        <a href="/items?type=Lost" class="tab">Lost</a>
+        <a href="/items?type=Found" class="tab">Found</a>
+      </nav>
+    </header>
+
+    <section class="items-grid">
+      <% items.forEach(item => { %>
+        <div class="item-card">
+
+          <% if (item.image) { %>
+            <img src="<%= item.image %>" class="item-image">
+          <% } else { %>
+            <div class="image-placeholder">No Image</div>
+          <% } %>
+
+          <span class="badge <%= item.type === 'Lost' ? 'lost' : 'found' %>">
+            <%= item.type.toUpperCase() %>
+          </span>
+
+          <h3><%= item.name %></h3>
+          <p class="location"><%= item.location %></p>
+
+          <a href="/items/<%= item.id %>" class="details-btn">
+            View Details
+          </a>
+        </div>
+      <% }) %>
+    </section>
+
   </div>
-<% }) %>
+
+</body>
+
+
+</html>
