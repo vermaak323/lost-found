@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | CampusFind</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="nav-logo">CampusFind</div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/items">Browse Items</a>
+
+    <% if (user) { %>
+      <a href="/add" class="nav-btn">Report Item</a>
+      <a href="/logout" class="nav-link logout">Logout</a>
+    <% } else { %>
+      <a href="/login">Login</a>
+      <a href="/register" class="nav-btn">Register</a>
+    <% } %>
+  </div>
+</nav>
+
+<!-- Login Card -->
+<div class="auth-page">
+  <div class="auth-card">
+    <h2>Welcome Back 👋</h2>
+    <p class="auth-subtitle">Login to continue to CampusFind</p>
+
+    <form method="POST" action="/login">
+      <div class="form-group">
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="you@example.com"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="••••••••"
+          required
+        />
+      </div>
+
+      <button type="submit" class="primary-btn full-btn">
+        Login
+      </button>
+    </form>
+
+    <p class="auth-switch">
+      New here? <a href="/register">Create an account</a>
+    </p>
+  </div>
+</div>
+
+</body>
+</html>

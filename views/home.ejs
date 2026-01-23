@@ -3,10 +3,18 @@
 <!-- Navbar -->
 <nav class="navbar">
   <div class="nav-logo">CampusFind</div>
+
   <div class="nav-links">
     <a href="/">Home</a>
     <a href="/items">Browse Items</a>
-    <a href="/add" class="nav-btn">Report Item</a>
+
+    <% if (user) { %>
+      <a href="/add" class="nav-btn">Report Item</a>
+      <a href="/logout" class="nav-link logout">Logout</a>
+    <% } else { %>
+      <a href="/login" class="nav-link">Login</a>
+      <a href="/register" class="nav-btn">Register</a>
+    <% } %>
   </div>
 </nav>
 
@@ -22,22 +30,25 @@
 
     <div class="hero-actions">
       <a href="/items" class="primary-btn">Search Lost Items</a>
-      <a href="/add" class="secondary-btn">Report Found Item</a>
+
+      <% if (user) { %>
+        <a href="/add" class="secondary-btn">Report Found Item</a>
+      <% } else { %>
+        <a href="/login" class="secondary-btn">Login to Report</a>
+      <% } %>
     </div>
   </div>
 
   <div class="hero-right">
-  <div class="scene">
-    <div class="platform"></div>
+    <div class="scene">
+      <div class="platform"></div>
 
-   <div class="object card-3d">
+      <div class="object card-3d">
         <img src="/images/hero-illustration.png" alt="Lost and Found Illustration">
+      </div>
+
+      <div class="object pin"></div>
+      <div class="object magnifier"></div>
     </div>
-
-    <div class="object pin"></div>
-    <div class="object magnifier"></div>
-  </div>
-</div>
-
   </div>
 </section>

@@ -9,19 +9,28 @@ const db = new sqlite3.Database("./database.db", (err) => {
 });
 
 db.serialize(() => {
+  // Items table
   db.run(`
-  CREATE TABLE IF NOT EXISTS items (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    type TEXT,
-    category TEXT,
-    location TEXT,
-    date TEXT,
-    description TEXT,
-    image TEXT
-  )
-`);
+    CREATE TABLE IF NOT EXISTS items (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      type TEXT,
+      category TEXT,
+      location TEXT,
+      date TEXT,
+      description TEXT,
+      image TEXT
+    )
+  `);
 
+  // Users table (for authentication)
+  db.run(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      email TEXT UNIQUE,
+      password TEXT
+    )
+  `);
 });
 
 module.exports = db;
